@@ -1,5 +1,6 @@
 mergeInto(LibraryManager.library, {
 
+  // This is needed to allow the frame to receive messages from voyage and pass them on to Unity.
   Initialize: function () {
     if (window.addEventListener) {
     window.addEventListener("message", onMessage, false);        
@@ -13,6 +14,7 @@ mergeInto(LibraryManager.library, {
 	}
   },
 
+  // This is the relay function to send messages to Voyage and probably requires adjusting if you want to call different functions (it calls 'submit' at the moment).
   CallGenerator: function (str) {
     //window.alert(UTF8ToString(str));
 	
@@ -22,6 +24,7 @@ mergeInto(LibraryManager.library, {
 }, "https://voyage.latitude.io");
   },
 
+  // The following are example methods from Unity, kept for posterity
   PrintFloatArray: function (array, size) {
     for(var i = 0; i < size; i++)
     console.log(HEAPF32[(array >> 2) + i]);
