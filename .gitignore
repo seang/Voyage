@@ -65,3 +65,6 @@ obj/
 Packages/
 ProjectSettings/
 UserSettings/
+
+# macOS
+.DS_Store
