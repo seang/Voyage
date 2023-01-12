@@ -1,33 +1,37 @@
 mergeInto(LibraryManager.library, {
-
   // This is needed to allow the frame to receive messages from voyage and pass them on to Unity.
   Initialize: function () {
     if (window.addEventListener) {
-    window.addEventListener("message", onMessage, false);        
-	} 
-	else if (window.attachEvent) {
-		window.parentattachEvent("onmessage", onMessage, false);
-	}
-	
-	function onMessage(event) {
-		window.unity.SendMessage("Dialog", event.data.func, event.data.message);
-	}
+      window.addEventListener("message", onMessage, false);
+    } else if (window.attachEvent) {
+      window.parentattachEvent("onmessage", onMessage, false);
+    }
+
+    function onMessage(event) {
+      window.unity.SendMessage("Dialog", event.data.func, event.data.message);
+    }
   },
 
   // This is the relay function to send messages to Voyage and probably requires adjusting if you want to call different functions (it calls 'submit' at the moment).
+  // NOTE: The required URL here will differ based on deployment target:
+  // For Developing the experience in Voyage code use:  https://voyage-web-main.netlify.app
+  // For Publishing the experience in Voyage code use:  https://voyage-code-main.netlify.app
+  // (these URLs may be subject to change so check back here in case of unexpected behavior)
   CallGenerator: function (str) {
     //window.alert(UTF8ToString(str));
-	
-	window.parent.parent.postMessage({
-    'func': 'submit',
-    'message': UTF8ToString(str)
-}, "https://voyage.latitude.io");
+
+    window.parent.parent.postMessage(
+      {
+        func: "submit",
+        message: UTF8ToString(str),
+      },
+      "https://voyage-code-main.netlify.app"
+    );
   },
 
   // The following are example methods from Unity, kept for posterity
   PrintFloatArray: function (array, size) {
-    for(var i = 0; i < size; i++)
-    console.log(HEAPF32[(array >> 2) + i]);
+    for (var i = 0; i < size; i++) console.log(HEAPF32[(array >> 2) + i]);
   },
 
   AddNumbers: function (x, y) {
@@ -45,5 +49,4 @@ mergeInto(LibraryManager.library, {
   BindWebGLTexture: function (texture) {
     GLctx.bindTexture(GLctx.TEXTURE_2D, GL.textures[texture]);
   },
-
 });
